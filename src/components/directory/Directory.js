@@ -3,7 +3,7 @@ import './Directory.scss';
 import MenuItem from '../menu-item/MenuItem';
 
 const Directory = () => {
-  const [section, setSection] = useState([
+  const [section] = useState([
     {
       title: 'hats',
       imageUrl: 'https://i.ibb.co/cvpntL1/hats.png',
