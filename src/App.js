@@ -5,18 +5,34 @@ import Header from './components/header/Header';
 import SignInSignUp from './pages/sign-in-sign-up/SignInSignUp';
 import { Switch, Route } from 'react-router-dom';
 import './App.css';
-import { auth } from './firebase/firebase.utils';
+import { auth, createUserProfileDocument } from './firebase/firebase.utils';
 
 const App = () => {
   const [currentUser, setCurrentUser] = useState(null);
   useEffect(() => {
-    const unsubscribeFromAuth = auth.onAuthStateChanged((user) => {
-      setCurrentUser(user);
-      console.log(user);
-      console.log(currentUser);
+    const unsubscribeFromAuth = auth.onAuthStateChanged(async (userAuth) => {
+      if (userAuth) {
+        const userRef = await createUserProfileDocument(userAuth);
+
+        userRef.onSnapshot((snapShot) => {
+          setCurrentUser({
+            id: snapShot.id,
+            ...snapShot.data(),
+          });
+        });
+      } else {
+        setCurrentUser(userAuth); //a.k.a. null
+      }
+      // setCurrentUser(userAuth);
+      // createUserProfileDocument(user);
+      // console.log(user);
+      // console.log(currentUser);
       return () => unsubscribeFromAuth();
     });
-  }, [currentUser]);
+  }, []);
+  useEffect(() => {
+    console.log(currentUser);
+  });
   return (
     <div>
       <Header currentUser={currentUser} />
