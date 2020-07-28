@@ -9,10 +9,12 @@ import HomePage from './pages/homepage/HomePage';
 import ShopPage from './pages/shop/Shop';
 import Header from './components/header/Header';
 import SignInSignUp from './pages/sign-in-sign-up/SignInSignUp';
+import Checkout from './pages/checkout/Checkout';
+
 import { auth, createUserProfileDocument } from './firebase/firebase.utils';
+
 import { setCurrentUser } from './redux/user/user.actions';
 import { selectCurrentUser } from './redux/user/user.selectors';
-import Checkout from './pages/checkout/Checkout';
 
 const App = ({ setCurrentUser, currentUser }) => {
   useEffect(() => {
@@ -31,7 +33,7 @@ const App = ({ setCurrentUser, currentUser }) => {
       }
       return () => unsubscribeFromAuth();
     });
-  }, []);
+  }, [setCurrentUser]);
 
   return (
     <div>
